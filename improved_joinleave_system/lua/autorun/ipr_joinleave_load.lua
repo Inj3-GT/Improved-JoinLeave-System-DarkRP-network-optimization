@@ -20,6 +20,8 @@ if SERVER then
      for count, file in pairs(Ipr_ClientSys) do
           AddCSLuaFile("ipr_joinleave_sys/lua_file/ipr_joinleave_client/"..file)
      end
+     
+     print("Improved Join/Leave System By Inj3 - Loaded")
 end
 
 if CLIENT then
@@ -31,5 +33,3 @@ if CLIENT then
           include("ipr_joinleave_sys/lua_file/ipr_joinleave_client/"..file)
      end
 end
-
-print("Improved Join/Leave System ClientSide By Inj3 - Loaded")

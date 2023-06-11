@@ -4,7 +4,7 @@
 --- // https://steamcommunity.com/id/Inj3/
 --- // Improved Join/Leave System
 
-Ipr_JoinLeave_Sys.Config.OptimizeDarkrp = true --- Optimize some darkrp gamemode functions (notification, log console, système de log journalier, logging)
+Ipr_JoinLeave_Sys.Config.OptimizeDarkrp = true --- Optimisation de certaines fonctions du gamemode darkrp (Notification, log console, système de log journalier, connexion/deconnexion)
 
 if (SERVER) then
     Ipr_JoinLeave_Sys.Config.Server = {

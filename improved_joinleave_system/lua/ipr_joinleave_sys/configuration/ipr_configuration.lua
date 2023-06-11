@@ -11,7 +11,7 @@ if (SERVER) then
             --- Configuration serveur.
             AntiSpam = 5, --- Délai si le joueur tente de se connecter plusieurs fois dans les 5 secondes.
             BlockName = { --- Bloquer le joueur qui porte un nom qui ne respect pas les règles de votre serveur (Kick).
-                "discord.gg",
+                 "discord.gg",
                  --"bot", Exemple
             }
     }

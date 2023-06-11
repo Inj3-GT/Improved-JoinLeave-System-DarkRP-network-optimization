@@ -3,12 +3,13 @@
 --- Script By Inj3 
 --- // https://steamcommunity.com/id/Inj3/
 --- // Improved Join/Leave System
-Ipr_JoinLeave_Sys.Config.OptimizeDarkrp = true --- Optimize some darkrp gamemode functions (notification, console log)
+
+Ipr_JoinLeave_Sys.Config.OptimizeDarkrp = true --- Optimize some darkrp gamemode functions (notification, log console, système de log journalier, logging)
 
 if (SERVER) then
     Ipr_JoinLeave_Sys.Config.Server = {
             --- Configuration serveur.
-            AntiSpam = 5, --- Délai si le joueur tente de se connecter plusieurs fois dans les 10 secondes.
+            AntiSpam = 5, --- Délai si le joueur tente de se connecter plusieurs fois dans les 5 secondes.
             BlockName = { --- Bloquer le joueur qui porte un nom qui ne respect pas les règles de votre serveur (Kick).
                 "discord.gg",
                  --"bot", Exemple

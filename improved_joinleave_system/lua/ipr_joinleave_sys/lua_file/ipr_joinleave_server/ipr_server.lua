@@ -4,8 +4,7 @@
 
 --- Override and optimize network logging on Gamemode DarkRP !
 do
-     if (Ipr_JoinLeave_Sys.Config.OptimizeDarkrp) and (string.lower(engine.ActiveGamemode()) == "darkrp") then
-          
+     if (Ipr_JoinLeave_Sys.Config.OptimizeDarkrp) and (string.lower(engine.ActiveGamemode()) == "darkrp") then          
          util.AddNetworkString("ipr_dkcsl")
          util.AddNetworkString("ipr_dkntf")
  

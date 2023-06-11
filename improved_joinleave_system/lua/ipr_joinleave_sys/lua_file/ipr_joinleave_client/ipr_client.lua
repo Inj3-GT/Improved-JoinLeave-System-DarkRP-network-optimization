@@ -7,6 +7,7 @@ end
 
 do
      if (Ipr_JoinLeave_Sys.Config.OptimizeDarkrp) and (string.lower(engine.ActiveGamemode()) == "darkrp") then
+          
          local function Ipr_JLS_Notif()
              local ipr_l, ipr_t, ipr_s = net.ReadUInt(3), net.ReadUInt(16), net.ReadString()
              

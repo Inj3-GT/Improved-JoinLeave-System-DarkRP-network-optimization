@@ -32,7 +32,6 @@ do
 
         local function Ipr_LogConsole(m, c, p)
             net.Start("ipr_dkcsl")
-
             for t, n in pairs(c) do
                 if (t == "a") then
                     continue
@@ -51,6 +50,7 @@ do
 
                 ipr_f:AddPlayer(v)
             end
+            
             net.Send(ipr_f)
         end
 

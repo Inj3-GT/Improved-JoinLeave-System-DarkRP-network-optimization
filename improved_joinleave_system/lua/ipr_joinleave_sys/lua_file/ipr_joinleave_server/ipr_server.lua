@@ -14,8 +14,8 @@ do
             end
 
             net.Start("ipr_dkntf")
-            net.WriteUInt(l, 3)
-            net.WriteUInt(t, 32)
+            net.WriteUInt(l or 1, 3)
+            net.WriteUInt(t or 3, 16)
             net.WriteString(m)
 
             if (b) then

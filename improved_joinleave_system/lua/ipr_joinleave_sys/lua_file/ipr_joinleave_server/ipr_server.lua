@@ -32,7 +32,7 @@ do
 
         local function Ipr_LogConsole(m, c, p)
             net.Start("ipr_dkcsl")       
-            for t, n in pairs(c) do
+            for _, n in pairs(c) do
                 net.WriteUInt(n, 8)
             end
             net.WriteString(m)

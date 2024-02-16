@@ -9,7 +9,7 @@ do
      if (Ipr_JoinLeave_Sys.Config.OptimizeDarkrp) and (string.lower(engine.ActiveGamemode()) == "darkrp") then
           
          local function Ipr_JLS_Notif()
-             local ipr_l, ipr_t, ipr_s = net.ReadUInt(3), net.ReadUInt(16), net.ReadString()
+             local ipr_l, ipr_t, ipr_s = net.ReadUInt(3), net.ReadUInt(32), net.ReadString()
              
              MsgC(Color(255, 20, 20, 255), "[JLS] ", Color(200, 200, 200, 255), ipr_s, "\n")
              notification.AddLegacy(ipr_s, ipr_t, ipr_l)

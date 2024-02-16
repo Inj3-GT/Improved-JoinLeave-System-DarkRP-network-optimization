@@ -31,12 +31,8 @@ do
         end
 
         local function Ipr_LogConsole(m, c, p)
-            net.Start("ipr_dkcsl")
+            net.Start("ipr_dkcsl")       
             for t, n in pairs(c) do
-                if (t == "a") then
-                    continue
-                end
-
                 net.WriteUInt(n, 8)
             end
             net.WriteString(m)
@@ -69,6 +65,7 @@ do
                 local ipr_x = false
                 DarkRP.log = function(t, c, n)
                     if (c) then
+                        c.a = nil
                         CAMI.GetPlayersWithAccess("DarkRP_SeeEvents", fp{Ipr_LogConsole, t, c})
                     end
                     if not GAMEMODE.Config.logging or (n) then
@@ -77,7 +74,6 @@ do
                     local ipr_o, ipr_od = os.date("%m_%d_%Y %I_%M %p"), os.date()
                     if not ipr_x then
                         ipr_x = true
-
                         file.Write("darkrp_logs/" ..ipr_o.. ".txt", ipr_od .."\t"..t)
                         return
                     end

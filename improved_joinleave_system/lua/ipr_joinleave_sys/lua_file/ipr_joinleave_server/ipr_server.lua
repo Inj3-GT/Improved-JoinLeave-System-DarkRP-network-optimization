@@ -87,8 +87,6 @@ do
 end  
  
 ------- Optimized for gamemodes
-gameevent.Listen("player_connect")
-util.AddNetworkString("ipr_jls")
 local ipr_cur, ipr_grp, ipr_bits = {}, {}, 2
 
 local function Ipr_TableCreate(t, n)
@@ -175,6 +173,8 @@ end
 Ipr_TableCreate(Ipr_JoinLeave_Sys.Config.Server.BlockName, "block")
 Ipr_TableCreate(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded.group, "join")
 Ipr_TableCreate(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave.group, "leave")
+util.AddNetworkString("ipr_jls")
+gameevent.Listen("player_connect")
 hook.Add("PlayerConnect", "Ipr_JLS_Login", Ipr_Login)
 hook.Add("PlayerInitialSpawn", "Ipr_JLS_Init", Ipr_Init)
 hook.Add("PlayerDisconnected", "Ipr_JLS_Logout", Ipr_Logout)

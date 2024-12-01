@@ -88,48 +88,67 @@ end
 
 ------- Optimized for gamemodes
 gameevent.Listen("player_connect")
-util.AddNetworkString("ipr_joinleave")
-local ipr_cur = {}
+util.AddNetworkString("ipr_jls")
+local ipr_cur, ipr_grp, ipr_bits = {}, {}, 2
 
-local function Ipr_Login(n)
-     local ipr_c = CurTime()
-     if (ipr_c < (ipr_cur[n] or 0)) then
-         return
-     end
+local function ipr_table_create(t, n)
+    for _, v in pairs(t) do
+        if not ipr_grp[n] then
+            ipr_grp[n] = {}
+        end
+        if not ipr_grp[n][v] then
+            ipr_grp[n][v] = {}
+        end
+        ipr_grp[n][v] = true
+    end
+end
 
-     net.Start("ipr_joinleave")
-     net.WriteUInt(1, 3)
-     net.WriteString(n)
-     net.Broadcast()
- 
-     ipr_cur[n] = ipr_c + Ipr_JoinLeave_Sys.Config.Server.AntiSpam
+local function ipr_SendNet(u, s)
+    net.Start("ipr_jls")
+    net.WriteUInt(u, ipr_bits)
+    net.WriteString(s)
+    net.Broadcast()
 end
 
 local function Ipr_Init(p)
-     timer.Simple(5, function()
-         if not IsValid(p) then
-             return
-         end
-         local ipr_n = p:Nick()
- 
-         net.Start("ipr_joinleave")
-         net.WriteUInt(2, 3)
-         net.WriteString(ipr_n)
-         net.Broadcast()
-     end)
+    timer.Simple(5, function()
+        if not IsValid(p) then
+            return
+        end
+        local ipr_g = p:GetUserGroup()
+        if (Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded[1]) and not ipr_grp["join"][ipr_g] then
+            return
+        end
+
+        local ipr_n = p:Nick()
+        ipr_SendNet(1, ipr_n)
+    end)
+end
+
+local function Ipr_Login(ipr_n)
+    if (Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameInit) then
+        return
+    end
+    local ipr_c = CurTime()
+    if (ipr_c < (ipr_cur[ipr_n] or 0)) then
+        return
+    end
+
+    ipr_SendNet(0, ipr_n)
+    ipr_cur[ipr_n] = ipr_c + Ipr_JoinLeave_Sys.Config.Server.AntiSpam
 end
  
 local function Ipr_Logout(p)
      if (ipr_cur[p] and CurTime() < ipr_cur[p]) then
           return
      end
-     local ipr_t, ipr_n = p:IsTimingOut() and 4 or 3, p:Nick()
+     local ipr_g = p:GetUserGroup()
+     if (Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1]) and not ipr_grp["leave"][ipr_g] then
+        return
+     end
      
-     net.Start("ipr_joinleave")
-     net.WriteUInt(ipr_t, 3)
-     net.WriteString(ipr_n)
-     net.Broadcast()
- 
+     local ipr_t, ipr_n = p:IsTimingOut() and 3 or 2, p:Nick()
+     ipr_SendNet(ipr_t, ipr_n)
      ipr_cur[ipr_n] = nil
 end 
 
@@ -154,6 +173,9 @@ local function Ipr_Event(data)
          break
      end
 end 
+
+ipr_table_create(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded.group, "join")
+ipr_table_create(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave.group, "leave")
 hook.Add( "PlayerConnect", "Ipr_JLS_Login", Ipr_Login)
 hook.Add( "PlayerInitialSpawn", "Ipr_JLS_Init", Ipr_Init)
 hook.Add( "PlayerDisconnected", "Ipr_JLS_Logout", Ipr_Logout)

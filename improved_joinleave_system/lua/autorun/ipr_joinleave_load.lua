@@ -29,4 +29,4 @@ if (SERVER) then
      for _, f in pairs(Ipr_Cl) do
          include("ipr_joinleave_sys/lua_file/ipr_joinleave_client/"..f)
      end
-end 
+end

@@ -43,7 +43,6 @@ do
                 if not ipr_h then
                     continue
                 end
-
                 ipr_f:AddPlayer(v)
             end
             

@@ -85,17 +85,19 @@ do
         hook.Add("PostGamemodeLoaded", "Ipr_JLS_DarkRPOver", Ipr_OverrideFunc)
     end
 end  
-
+ 
 ------- Optimized for gamemodes
 gameevent.Listen("player_connect")
 util.AddNetworkString("ipr_jls")
 local ipr_cur, ipr_grp, ipr_bits = {}, {}, 2
 
-local function ipr_table_create(t, n)
-    for _, v in pairs(t) do
+local function Ipr_TableCreate(t, n)
+    for _, v in ipairs(t) do
         if not ipr_grp[n] then
             ipr_grp[n] = {}
         end
+        v = (n == "block") and v:lower() or v
+        
         if not ipr_grp[n][v] then
             ipr_grp[n][v] = {}
         end
@@ -103,7 +105,7 @@ local function ipr_table_create(t, n)
     end
 end
 
-local function ipr_SendNet(u, s)
+local function Ipr_SendNet(u, s)
     net.Start("ipr_jls")
     net.WriteUInt(u, ipr_bits)
     net.WriteString(s)
@@ -121,7 +123,7 @@ local function Ipr_Init(p)
         end
 
         local ipr_n = p:Nick()
-        ipr_SendNet(1, ipr_n)
+        Ipr_SendNet(1, ipr_n)
     end)
 end
 
@@ -134,10 +136,10 @@ local function Ipr_Login(ipr_n)
         return
     end
 
-    ipr_SendNet(0, ipr_n)
+    Ipr_SendNet(0, ipr_n)
     ipr_cur[ipr_n] = ipr_c + Ipr_JoinLeave_Sys.Config.Server.AntiSpam
 end
- 
+
 local function Ipr_Logout(p)
      if (ipr_cur[p] and CurTime() < ipr_cur[p]) then
           return
@@ -148,34 +150,32 @@ local function Ipr_Logout(p)
      end
      
      local ipr_t, ipr_n = p:IsTimingOut() and 3 or 2, p:Nick()
-     ipr_SendNet(ipr_t, ipr_n)
+     Ipr_SendNet(ipr_t, ipr_n)
      ipr_cur[ipr_n] = nil
 end 
 
 local function Ipr_Event(data)
-     local ipr_n = data.name
-     local ipr_d = data.userid
- 
-     for k in string.gmatch(ipr_n, "[^%s//]+" ) do
-         for _, d in pairs(Ipr_JoinLeave_Sys.Config.Server.BlockName) do
-             if string.find(k:lower(), d:lower())  then
- 
-                 timer.Simple(1, function()
-                     if not player.GetByID(ipr_d) then
-                         return
-                     end
-                     game.KickID(ipr_d, "Votre nom '" ..k:lower().. "' ne respect pas les règles du serveur" )
-                     print("Le joueur '" ..k:lower().. "' à était kick, car il ne respect pas les noms autorisés sur le serveur.")
-                 end)
-                 break
-             end
-         end
-         break
-     end
-end 
+    local ipr_n = data.name
+    ipr_n = ipr_n:lower()
+    local ipr_d = data.userid
 
-ipr_table_create(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded.group, "join")
-ipr_table_create(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave.group, "leave")
+    for k in string.gmatch(ipr_n, "[^%s//]+" ) do
+        if (ipr_grp["block"][k]) then
+            timer.Simple(1, function()
+                if not player.GetByID(ipr_d) then
+                    return
+                end
+                game.KickID(ipr_d, "Votre nom '" ..k.. "' ne respect pas les règles du serveur" )
+                print("Le joueur '" ..k.. "' à était kick, car il ne respect pas les noms autorisés sur le serveur.")
+            end)
+        end
+        break
+    end
+end
+
+Ipr_TableCreate(Ipr_JoinLeave_Sys.Config.Server.BlockName, "block")
+Ipr_TableCreate(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded.group, "join")
+Ipr_TableCreate(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave.group, "leave")
 hook.Add( "PlayerConnect", "Ipr_JLS_Login", Ipr_Login)
 hook.Add( "PlayerInitialSpawn", "Ipr_JLS_Init", Ipr_Init)
 hook.Add( "PlayerDisconnected", "Ipr_JLS_Logout", Ipr_Logout)

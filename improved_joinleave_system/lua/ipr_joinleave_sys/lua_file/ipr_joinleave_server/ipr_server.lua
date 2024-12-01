@@ -92,6 +92,7 @@ local function Ipr_TableCreate(t, n)
     if not ipr_grp[n] then
         ipr_grp[n] = {}
     end
+    
     for _, v in ipairs(t) do
         v = (n == "block") and v:lower() or v
         if not ipr_grp[n][v] then

@@ -35,7 +35,7 @@ local function Ipr_Log()
     ipr_u = ipr_u + 1
     local ipr_n = net.ReadString()
 
-    chat.AddText(Ipr_JoinLeave_Sys.Config.Client.ColorNameServer, Ipr_JoinLeave_Sys.Config.Client.NameServer.. " : ", Ipr_JoinLeave_Sys.Config.Client.ColorPlayerJoin, ipr_n, Ipr_JoinLeave_Sys.Config.Client[ipr_u].Color, ", " ..Ipr_JoinLeave_Sys.Config.Client[ipr_u].Texte)
+    chat.AddText(Ipr_JoinLeave_Sys.Config.Client.ColorNameServer, Ipr_JoinLeave_Sys.Config.Client.NameServer.. " : ", Ipr_JoinLeave_Sys.Config.Client.ColorPlayerJoin, ipr_n, Ipr_JoinLeave_Sys.Config.Client[ipr_u].c, ", " ..Ipr_JoinLeave_Sys.Config.Client[ipr_u].t)
 end
 
 net.Receive("ipr_jls", Ipr_Log)

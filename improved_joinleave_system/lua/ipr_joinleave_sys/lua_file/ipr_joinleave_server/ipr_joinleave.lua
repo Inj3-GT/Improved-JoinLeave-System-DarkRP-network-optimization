@@ -72,12 +72,13 @@ local function Ipr_GameLeave(p)
 end
 
 local function Ipr_GameConnect(data)
-    local ipr_n = data.name
-    ipr_n = ipr_n:lower()
-    local ipr_d = data.userid
-
     local ipr_x = false
+    
     if (Ipr_JoinLeave_Sys.Config.Server.BlockName) then
+        local ipr_n = data.name
+        ipr_n = ipr_n:lower()
+        local ipr_d = data.userid
+
         for d in pairs(ipr_JLSTable.Grp["1"]) do
             local ipr_w = d:lower()
             if string.find(ipr_n, ipr_w)  then

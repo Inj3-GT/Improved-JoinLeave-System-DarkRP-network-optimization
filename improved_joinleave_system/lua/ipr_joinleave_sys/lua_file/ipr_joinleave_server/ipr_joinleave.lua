@@ -85,8 +85,8 @@ local function Ipr_GameConnect(data)
                     if not player.GetByID(ipr_d) then
                         return
                     end
-                    game.KickID(ipr_d, "Votre nom '" ..ipr_n.. "' ne respect pas les règles du serveur" )
-                    print("Le joueur '" ..ipr_n.. "' à était kick, car il ne respect pas les noms autorisés sur le serveur.")
+                    game.KickID(ipr_d, "Votre nom '" ..ipr_n.. "' ne respecte pas les règles du serveur." )
+                    print("Le joueur '" ..ipr_n.. "' a été kické, car il ne respecte pas les noms autorisés sur le serveur.")
                 end)
                 ipr_x = true
                 break

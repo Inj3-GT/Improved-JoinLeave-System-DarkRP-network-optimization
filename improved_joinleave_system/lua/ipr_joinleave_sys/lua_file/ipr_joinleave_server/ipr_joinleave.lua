@@ -80,8 +80,7 @@ local function Ipr_GameConnect(data)
         local ipr_d = data.userid
 
         for d in pairs(ipr_JLSTable.Grp["1"]) do
-            local ipr_w = d:lower()
-            if string.find(ipr_n, ipr_w)  then
+            if string.find(ipr_n, d)  then
                 timer.Simple(1, function()
                     if not player.GetByID(ipr_d) then
                         return

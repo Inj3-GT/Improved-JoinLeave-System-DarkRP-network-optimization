@@ -20,14 +20,14 @@ end
 
 ipr_JLSTable.Bits = 2
 local function Ipr_SortNet(u, s, g)
-    local Ipr_Player = player.GetHumans()
+    local ipr_p = player.GetHumans()
 
-    for _, v in ipairs(Ipr_Player) do
+    for _, v in ipairs(ipr_p) do
         if not IsValid(v) then
            continue
         end
-        local ipr_vgroup = v:GetUserGroup()
-        if (g) and not ipr_JLSTable.Grp[g][ipr_vgroup] then
+        local ipr_g = v:GetUserGroup()
+        if (g) and not ipr_JLSTable.Grp[g][ipr_g] then
            continue
         end
 

@@ -9,18 +9,19 @@ Ipr_JoinLeave_Sys.Config.OptimizeDarkrp = true --- Optimisation de certaines fon
 
 if (SERVER) then
     Ipr_JoinLeave_Sys.Config.Server = {
-        HideNotification_GameInit = {false, --- Masquer la notification lorsque le joueur n'est pas encore complètement initialisé dans le serveur, seuls les groupes ci-dessous peuvent la voir.
+        HideNotification_GameInit = {false, --- Masquer la notification lorsque le joueur n'est pas encore complètement initialisé dans le serveur, seuls les groupes ci-dessous peuvent voir la notification.
             group = {
                 "superadmin",
                 "vip1",
             }
         },
-        HideNotification_GameLoaded = {false, --- Masquer la notification lorsque le joueur a entièrement chargé et a rejoint le serveur, seuls les groupes ci-dessous peuvent la voir.
+        HideNotification_GameLoaded = {false, --- Masquer la notification lorsque le joueur a entièrement chargé et a rejoint le serveur.
             group = {
                 "superadmin",
+                "admin",
             }
         },
-        HideNotification_GameLeave = {true, --- Masquer la notification lorsque le joueur quitte le serveur, seuls les groupes ci-dessous peuvent la voir.
+        HideNotification_GameLeave = {true, --- Masquer la notification lorsque le joueur quitte le serveur.
             group = {
                 "superadmin",
             }

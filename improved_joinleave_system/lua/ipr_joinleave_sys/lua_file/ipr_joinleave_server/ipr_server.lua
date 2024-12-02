@@ -31,7 +31,7 @@ do
         end
 
         local function Ipr_LogConsole(m, c, p)
-            net.Start("ipr_dkcsl")       
+            net.Start("ipr_dkcsl")
             for _, n in pairs(c) do
                 net.WriteUInt(n, 8)
             end
@@ -41,11 +41,11 @@ do
             for _, v in ipairs(p) do
                 local ipr_h = hook.Call("canSeeLogMessage", GAMEMODE, v, m, c)
                 if not ipr_h then
-                    continue
+                   continue
                 end
                 ipr_f:AddPlayer(v)
             end
-            
+
             net.Send(ipr_f)
         end
 
@@ -83,8 +83,8 @@ do
         end
         hook.Add("PostGamemodeLoaded", "Ipr_JLS_DarkRPOver", Ipr_OverrideFunc)
     end
-end  
- 
+end
+
 ------- Optimized for gamemodes
 local ipr_cur, ipr_grp, ipr_bits = {}, {}, 2
 
@@ -92,7 +92,7 @@ local function Ipr_SortValue(t, n)
     if not ipr_grp[n] then
         ipr_grp[n] = {}
     end
-    
+
     for _, v in ipairs(t) do
         v = (n == "1") and v:lower() or v
         if not ipr_grp[n][v] then
@@ -105,13 +105,13 @@ end
 local function Ipr_SortNet(u, s, g)
     local Ipr_Player = ents.FindByClass("player")
 
-    for _, v in ipairs(Ipr_Player) do 
+    for _, v in ipairs(Ipr_Player) do
         if not IsValid(v) then
-            continue
+           continue
         end
         local ipr_vgroup = v:GetUserGroup()
         if (g) and not ipr_grp[g][ipr_vgroup] then
-            continue
+           continue
         end
 
         net.Start("ipr_jls")
@@ -119,7 +119,7 @@ local function Ipr_SortNet(u, s, g)
         net.WriteString(s)
         net.Send(v)
     end
-end 
+end
 
 local function Ipr_GameLoaded(p)
     timer.Simple(7, function()
@@ -147,10 +147,10 @@ local function Ipr_GameLeave(p)
     if (ipr_cur[p]) and (ipr_c < ipr_cur[p]) then
         return
     end
-     
-     local ipr_t, ipr_n = p:IsTimingOut() and 3 or 2, p:Nick()
-     Ipr_SortNet(ipr_t, ipr_n, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1] and "3" or nil)
-     ipr_cur[ipr_n] = nil
+
+    local ipr_t, ipr_n = p:IsTimingOut() and 3 or 2, p:Nick()
+    Ipr_SortNet(ipr_t, ipr_n, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1] and "3" or nil)
+    ipr_cur[ipr_n] = nil
 end
 
 local function Ipr_GameConnect(data)

@@ -1,7 +1,6 @@
 --- Script By Inj3
 --- https://steamcommunity.com/id/Inj3/
 --- https://github.com/Inj3-GT
---- Improved Join/Leave System
 --- Activer = true / Désactiver = false
 
 Ipr_JoinLeave_Sys.Config.OptimizeDarkrp = true --- Optimisation de certaines fonctions du gamemode DarkRP (notification, log console, système de log journalier)

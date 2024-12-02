@@ -56,7 +56,7 @@ local function Ipr_GameInit(p)
         return
     end
 
-    Ipr_SortNet(0, p, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameInit and "4" or nil)
+    Ipr_SortNet(0, p, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameInit[1] and "4" or nil)
     ipr_JLSTable.Cur[p] = ipr_c + Ipr_JoinLeave_Sys.Config.Server.AntiSpam
 end
 
@@ -74,7 +74,7 @@ end
 local function Ipr_GameConnect(data)
     local ipr_x = false
     
-    if (Ipr_JoinLeave_Sys.Config.Server.BlockName) then
+    if (Ipr_JoinLeave_Sys.Config.Server.BlockName[1]) then
         local ipr_n = data.name
         ipr_n = ipr_n:lower()
         local ipr_d = data.userid

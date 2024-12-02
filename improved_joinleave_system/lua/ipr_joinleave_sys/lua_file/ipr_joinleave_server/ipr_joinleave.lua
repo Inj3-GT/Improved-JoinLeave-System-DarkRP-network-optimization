@@ -20,7 +20,7 @@ end
 
 ipr_JLSTable.Bits = 2
 local function Ipr_SortNet(u, s, g)
-    local Ipr_Player = ents.FindByClass("player")
+    local Ipr_Player = player.GetHumans()
 
     for _, v in ipairs(Ipr_Player) do
         if not IsValid(v) then

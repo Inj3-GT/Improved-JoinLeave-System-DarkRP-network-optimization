@@ -62,12 +62,11 @@ end
 
 local function Ipr_GameLeave(p)
     local ipr_CurTime = CurTime()
-    if (ipr_JLSTable.Cur[p]) and (ipr_CurTime < ipr_JLSTable.Cur[p]) then
-        return
+    if ((ipr_JLSTable.Cur[p]) and (ipr_CurTime > ipr_JLSTable.Cur[p])) then
+        local ipr_Int, ipr_Nick = p:IsTimingOut() and 3 or 2, p:Nick()
+        Ipr_SortNet(ipr_Int, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1] and "3" or nil)
     end
 
-    local ipr_Int, ipr_Nick = p:IsTimingOut() and 3 or 2, p:Nick()
-    Ipr_SortNet(ipr_Int, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1] and "3" or nil)
     ipr_JLSTable.Cur[p] = nil
 end
 

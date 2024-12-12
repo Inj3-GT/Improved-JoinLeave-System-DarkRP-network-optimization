@@ -68,7 +68,7 @@ local function Ipr_GameLeave(p)
 
     local ipr_Int, ipr_Nick = p:IsTimingOut() and 3 or 2, p:Nick()
     Ipr_SortNet(ipr_Int, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1] and "3" or nil)
-    ipr_JLSTable.Cur[ipr_Nick] = nil
+    ipr_JLSTable.Cur[p] = nil
 end
 
 local function Ipr_GameConnect(data)

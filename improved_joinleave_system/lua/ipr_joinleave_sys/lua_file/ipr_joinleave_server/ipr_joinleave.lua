@@ -67,24 +67,24 @@ local function Ipr_GameLeave(p)
 
     local ipr_Int, ipr_Nick = p:IsTimingOut() and 3 or 2, p:Nick()
     Ipr_SortNet(ipr_Int, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1] and "3" or nil)
-    ipr_JLSTable.Cur[ipr_n] = nil
+    ipr_JLSTable.Cur[ipr_Nick] = nil
 end
 
 local function Ipr_GameConnect(data)
     local ipr_BlockName = Ipr_JoinLeave_Sys.Config.Server.BlockName[1]
     if (ipr_BlockName) then
-        local ipr_n = data.name
-        ipr_n = ipr_n:lower()
-        local ipr_d = data.userid
+        local ipr_DataName = data.name
+        ipr_DataName = ipr_DataName:lower()
+        local ipr_DataUserId = data.userid
 
         for d in pairs(ipr_JLSTable.Grp["1"]) do
-            if string.find(ipr_n, d)  then
+            if string.find(ipr_DataName, d)  then
                 timer.Simple(1, function()
-                    if not player.GetByID(ipr_d) then
+                    if not player.GetByID(ipr_DataUserId) then
                         return
                     end
-                    game.KickID(ipr_d, "Votre nom '" ..ipr_n.. "' ne respecte pas les règles du serveur." )
-                    print("Le joueur '" ..ipr_n.. "' a été kické, car il ne respecte pas les noms autorisés sur le serveur.")
+                    game.KickID(ipr_DataUserId, "Votre nom '" ..ipr_DataName.. "' ne respecte pas les règles du serveur." )
+                    print("Le joueur '" ..ipr_DataName.. "' a été kické, car il ne respecte pas les noms autorisés sur le serveur.")
                 end)
                 break
             end

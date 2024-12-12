@@ -12,6 +12,7 @@ local function Ipr_SortValue(t, n)
 
     for _, v in ipairs(t) do
         v = (n == "1") and v:lower() or v
+        
         if not ipr_JLSTable.Grp[n][v] then
             ipr_JLSTable.Grp[n][v] = {}
         end

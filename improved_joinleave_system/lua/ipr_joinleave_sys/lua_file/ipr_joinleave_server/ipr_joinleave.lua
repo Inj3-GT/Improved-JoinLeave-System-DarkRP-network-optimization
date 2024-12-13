@@ -51,9 +51,9 @@ local function Ipr_GameLoaded(p)
             return
         end
             
-        local ipr_Nick = p:Nick()
         local ipr_SteamID = p:SteamID()
         Ipr_ClearPlayer(ipr_SteamID)
+        local ipr_Nick = p:Nick()    
         Ipr_MssgNet(1, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded[1] and 2 or nil)
     end)
 end

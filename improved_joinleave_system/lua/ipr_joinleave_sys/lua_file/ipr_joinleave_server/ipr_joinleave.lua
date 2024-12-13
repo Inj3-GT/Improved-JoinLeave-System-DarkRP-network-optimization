@@ -11,7 +11,7 @@ local function Ipr_SortValue(t, n)
     end
 
     for _, v in ipairs(t) do
-        v = (n == "1") and v:lower() or v
+        v = (n == 1) and v:lower() or v
         
         if not ipr_JLSTable.Grp[n][v] then
             ipr_JLSTable.Grp[n][v] = {}
@@ -20,7 +20,7 @@ local function Ipr_SortValue(t, n)
     end
 end
 
-local function Ipr_SortNet(u, s, g)
+local function Ipr_MssgNet(u, s, g)
     local ipr_p = player.GetHumans()
 
     for _, v in ipairs(ipr_p) do
@@ -39,6 +39,12 @@ local function Ipr_SortNet(u, s, g)
     end
 end
 
+local function Ipr_ClearPlayer(p)
+    if (ipr_JLSTable.Cur[p]) then
+        ipr_JLSTable.Cur[p] = nil
+    end
+end
+
 local function Ipr_GameLoaded(p)
     timer.Simple(7, function()
         if not IsValid(p) then
@@ -46,38 +52,55 @@ local function Ipr_GameLoaded(p)
         end
             
         local ipr_Nick = p:Nick()
-        Ipr_SortNet(1, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded[1] and "2" or nil)
+        local ipr_SteamID = p:SteamID()
+        Ipr_ClearPlayer(ipr_SteamID)
+        Ipr_MssgNet(1, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded[1] and 2 or nil)
     end)
 end
 
-local function Ipr_GameInit(p)
+local function Ipr_GameInit(s, n)
+    local ipr_JLSClear = "ipr_JLSClear" ..s
+    if (timer.Exists(ipr_JLSClear)) then
+        timer.Remove(ipr_JLSClear)
+    end
     local ipr_CurTime = CurTime()
-    if (ipr_CurTime < (ipr_JLSTable.Cur[p] or 0)) then
+    local ipr_JLS = ipr_JLSTable.Cur[s]
+    if (ipr_JLS and (ipr_CurTime < ipr_JLS)) then
         return
     end
 
-    Ipr_SortNet(0, p, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameInit[1] and "4" or nil)
-    ipr_JLSTable.Cur[p] = ipr_CurTime + Ipr_JoinLeave_Sys.Config.Server.AntiSpam
+    local ipr_AntiSpam = Ipr_JoinLeave_Sys.Config.Server.AntiSpam
+    ipr_JLSTable.Cur[s] = ipr_CurTime + ipr_AntiSpam
+    Ipr_MssgNet(0, n, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameInit[1] and 4 or nil)
 end
 
 local function Ipr_GameLeave(p)
+    local ipr_SteamID = p:SteamID()
+    local ipr_JLS = ipr_JLSTable.Cur[ipr_SteamID]
     local ipr_CurTime = CurTime()
-    if ((ipr_JLSTable.Cur[p]) and (ipr_CurTime > ipr_JLSTable.Cur[p])) then
-        local ipr_Int, ipr_Nick = p:IsTimingOut() and 3 or 2, p:Nick()
-        Ipr_SortNet(ipr_Int, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1] and "3" or nil)
-    end
+    if (ipr_CurTime > (ipr_JLS or 0)) then
+        local ipr_Int = p:IsTimingOut() and 3 or 2
+        local ipr_Nick = p:Nick()
+        local ipr_JLSClear = "ipr_JLSClear" ..ipr_SteamID
+        Ipr_MssgNet(ipr_Int, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1] and 3 or nil)
 
-    ipr_JLSTable.Cur[p] = nil
+        if (timer.Exists(ipr_JLSClear)) then
+            return
+        end
+        timer.Create(ipr_JLSClear, Ipr_JoinLeave_Sys.Config.Server.AntiSpam, 1, function()
+            Ipr_ClearPlayer(ipr_SteamID)
+        end)
+    end
 end
 
 local function Ipr_GameConnect(data)
     local ipr_BlockName = Ipr_JoinLeave_Sys.Config.Server.BlockName[1]
+    local ipr_DataName = data.name
     if (ipr_BlockName) then
-        local ipr_DataName = data.name
         ipr_DataName = ipr_DataName:lower()
         local ipr_DataUserId = data.userid
 
-        for d in pairs(ipr_JLSTable.Grp["1"]) do
+        for d in pairs(ipr_JLSTable.Grp[1]) do
             if string.find(ipr_DataName, d)  then
                 timer.Simple(1, function()
                     if not player.GetByID(ipr_DataUserId) then
@@ -90,13 +113,14 @@ local function Ipr_GameConnect(data)
             end
         end
     end
-    Ipr_GameInit(data.name)
+    local ipr_NetworkId = data.networkid
+    Ipr_GameInit(ipr_NetworkId, ipr_DataName)
 end
  
-Ipr_SortValue(Ipr_JoinLeave_Sys.Config.Server.BlockName.blacklist, "1")
-Ipr_SortValue(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded.group, "2")
-Ipr_SortValue(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave.group, "3")
-Ipr_SortValue(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameInit.group, "4")
+Ipr_SortValue(Ipr_JoinLeave_Sys.Config.Server.BlockName.blacklist, 1)
+Ipr_SortValue(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded.group, 2)
+Ipr_SortValue(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave.group, 3)
+Ipr_SortValue(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameInit.group, 4)
 util.AddNetworkString("ipr_jls")
 gameevent.Listen("player_connect")
 hook.Add("player_connect", "Ipr_JLS_Init", Ipr_GameConnect)

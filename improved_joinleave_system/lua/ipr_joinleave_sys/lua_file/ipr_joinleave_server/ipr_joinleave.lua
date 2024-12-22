@@ -78,12 +78,13 @@ local function Ipr_GameLeave(p)
     local ipr_SteamID = p:SteamID()
     local ipr_JLS = ipr_JLSTable.Cur[ipr_SteamID]
     local ipr_CurTime = CurTime()
+    
     if (ipr_CurTime > (ipr_JLS or 0)) then
         local ipr_Int = p:IsTimingOut() and 3 or 2
         local ipr_Nick = p:Nick()
-        local ipr_JLSClear = "ipr_JLSClear" ..ipr_SteamID
         Ipr_MssgNet(ipr_Int, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1] and 3 or nil)
 
+        local ipr_JLSClear = "ipr_JLSClear" ..ipr_SteamID
         if (timer.Exists(ipr_JLSClear)) then
             return
         end
@@ -96,6 +97,7 @@ end
 local function Ipr_GameConnect(data)
     local ipr_BlockName = Ipr_JoinLeave_Sys.Config.Server.BlockName[1]
     local ipr_DataName = data.name
+    
     if (ipr_BlockName) then
         ipr_DataName = ipr_DataName:lower()
         local ipr_DataUserId = data.userid
@@ -113,6 +115,7 @@ local function Ipr_GameConnect(data)
             end
         end
     end
+    
     local ipr_NetworkId = data.networkid
     Ipr_GameInit(ipr_NetworkId, ipr_DataName)
 end

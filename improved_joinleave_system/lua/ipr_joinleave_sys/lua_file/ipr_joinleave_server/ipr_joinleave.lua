@@ -63,6 +63,7 @@ local function Ipr_GameInit(s, n)
     if (timer.Exists(ipr_JLSClear)) then
         timer.Remove(ipr_JLSClear)
     end
+    
     local ipr_CurTime = CurTime()
     local ipr_JLS = ipr_JLSTable.Cur[s]
     if (ipr_JLS and (ipr_CurTime < ipr_JLS)) then

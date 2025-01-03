@@ -56,7 +56,12 @@ local function Ipr_OverrideFunc()
         end
 
         DarkRP.notify = function(p, t, l, m)
-            Ipr_LogNotif(type(p) == "table" and {p} or p, t, l, m)
+            if not IsValid(p) then
+                return
+            end
+            p = type(p) ~= "Table" and {p} or p
+
+            Ipr_LogNotif(p, t, l, m)
         end
         DarkRP.notifyAll = function(t, l, m)
             Ipr_LogNotif(nil, t, l, m, true)
@@ -81,4 +86,5 @@ local function Ipr_OverrideFunc()
         end
     end
 end
+
 hook.Add("PostGamemodeLoaded", "Ipr_JLS_DarkRPOver", Ipr_OverrideFunc)

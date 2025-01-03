@@ -65,7 +65,7 @@ local function Ipr_OverrideFunc()
         end
 
         DarkRP.notify = function(p, t, l, m)
-            p = (type(p) ~= "table") and {p} or IsValid(p) and p or nil 
+            p = (type(p) ~= "table") and {p} or IsValid(p) and p
             if not p then
                 return
             end

@@ -25,7 +25,12 @@ local function Ipr_LogNotif(p, t, l, m, b)
 
     local ipr_f = RecipientFilter()
     for i = 1, #p do
-        ipr_f:AddPlayer(p[i])
+        local ipr_Player = p[i]
+        if not IsValid(ipr_Player) then
+            continue
+        end
+
+        ipr_f:AddPlayer(ipr_Player)
     end
     net.Send(ipr_f)
 end
@@ -39,11 +44,15 @@ local function Ipr_LogConsole(m, c, p)
 
     local ipr_f = RecipientFilter()
     for i = 1, #p do
-        if not hook.Call("canSeeLogMessage", GAMEMODE, p[i], m, c) then
+        local ipr_Player = p[i]
+        if not IsValid(ipr_Player) then
+            continue
+        end
+        if not hook.Call("canSeeLogMessage", GAMEMODE, ipr_Player, m, c) then
            continue
         end
 
-        ipr_f:AddPlayer(p[i])
+        ipr_f:AddPlayer(ipr_Player)
     end
 
     net.Send(ipr_f)
@@ -56,11 +65,10 @@ local function Ipr_OverrideFunc()
         end
 
         DarkRP.notify = function(p, t, l, m)
-            if not IsValid(p) then
+            p = (type(p) ~= "table") and {p} or IsValid(p) and p or nil 
+            if not p then
                 return
             end
-            p = type(p) ~= "Table" and {p} or p
-
             Ipr_LogNotif(p, t, l, m)
         end
         DarkRP.notifyAll = function(t, l, m)
@@ -88,3 +96,7 @@ local function Ipr_OverrideFunc()
 end
 
 hook.Add("PostGamemodeLoaded", "Ipr_JLS_DarkRPOver", Ipr_OverrideFunc)
+
+-- // Debug - DarkRP.notify(player.GetAll()[1], 1, 1, "test") 
+-- // Debug - DarkRP.notifyAll(1, 1, "test") 
+-- // Debug - DarkRP.log("test", color_white, false)

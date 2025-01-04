@@ -69,7 +69,7 @@ end
 
 local function Ipr_GameInit(s, n)
     Ipr_RemoveTimer(s)
-    if ipr_JLSTable.Cur[s] then
+    if (ipr_JLSTable.Cur[s]) then
         return
     end
 

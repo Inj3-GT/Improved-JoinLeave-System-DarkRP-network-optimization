@@ -42,7 +42,7 @@ local function Ipr_LogConsole(m, c, p)
         net.WriteUInt(n, 8)
     end
 
-    net.WriteString(m or "[ERROR] See logs for more info !")
+    net.WriteString(m)
 
     local ipr_RecipFilter = RecipientFilter()
     for i = 1, #p do

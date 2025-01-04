@@ -25,8 +25,14 @@ do
             hook.Call("DarkRPLogPrinted", nil, ipr_n, ipr_c)
         end
 
-        net.Receive("ipr_dkntf", Ipr_JLS_Notif)
-        net.Receive("ipr_dkcsl", Ipr_JLS_Console)
+        local ipr_Receive = {
+            [0] = function() Ipr_JLS_Console() end,
+            [1] = function() Ipr_JLS_Notif() end,
+        }
+        net.Receive("ipr_dkntf", function()
+            local ipr_NetRead = net.ReadUInt(1)
+            ipr_Receive[ipr_NetRead]()
+        end)
     end
 end
 

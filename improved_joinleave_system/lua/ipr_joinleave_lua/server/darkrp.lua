@@ -96,15 +96,15 @@ local function Ipr_OverrideFunc()
             if not GAMEMODE.Config.logging or (n) then
                 return
             end
-            local ipr_OsDate_ = os.date("%X")
 
+            local ipr_OsDate_ = os.date("%X")
             if not ipr_Session then
-                file.Write(ipr_Path, ipr_OsDate_ .."\t"..t)
+                file.Write(ipr_Path, ipr_OsDate_ .."\t [JLS] "..t)
                 ipr_Session = true
                 return
             end
             
-            file.Append(ipr_Path, "\n" ..ipr_OsDate_.. "\t" ..t)
+            file.Append(ipr_Path, "\n" ..ipr_OsDate_.. "\t [JLS] " ..t)
         end
     end 
 end

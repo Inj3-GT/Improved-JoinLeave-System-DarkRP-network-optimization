@@ -46,57 +46,53 @@ local function Ipr_ClearPlayer(p)
     end
 end
 
+local function Ipr_RemoveTimer(s)
+    local ipr_JLSClear = "ipr_JLSClear" ..s
+
+    if (timer.Exists(ipr_JLSClear)) then
+        timer.Remove(ipr_JLSClear)
+    end
+end
+
 local function Ipr_GameLoaded(p)
     timer.Simple(7, function()
         if not IsValid(p) then
             return
         end
-            
         local ipr_SteamID = p:SteamID()
         Ipr_ClearPlayer(ipr_SteamID)
 
         local ipr_Nick = p:Nick()    
-        Ipr_MssgNet(1, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded[1] and 2 or nil)
+        Ipr_MssgNet(1, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded[1] and 2)
     end)
 end
 
 local function Ipr_GameInit(s, n)
-    local ipr_JLSClear = "ipr_JLSClear" ..s
-    if (timer.Exists(ipr_JLSClear)) then
-        timer.Remove(ipr_JLSClear)
-    end
-    
-    local ipr_CurTime = CurTime()
-    local ipr_JLS = ipr_JLSTable.Cur[s]
-    if (ipr_JLS and (ipr_CurTime < ipr_JLS)) then
+    Ipr_RemoveTimer(s)
+    if ipr_JLSTable.Cur[s] then
         return
     end
 
-    local ipr_AntiSpam = Ipr_JoinLeave_Sys.Config.Server.AntiSpam
-    ipr_JLSTable.Cur[s] = ipr_CurTime + ipr_AntiSpam
-
-    Ipr_MssgNet(0, n, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameInit[1] and 4 or nil)
+    local ipr_CurTime = CurTime()
+    ipr_JLSTable.Cur[s] = ipr_CurTime + Ipr_JoinLeave_Sys.Config.Server.AntiSpam
+    Ipr_MssgNet(0, n, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameInit[1] and 4)
 end
 
 local function Ipr_GameLeave(p)
     local ipr_SteamID = p:SteamID()
-    local ipr_JLS = ipr_JLSTable.Cur[ipr_SteamID]
     local ipr_CurTime = CurTime()
-    
-    if (ipr_CurTime > (ipr_JLS or 0)) then
+
+    if (ipr_CurTime > (ipr_JLSTable.Cur[ipr_SteamID] or 0)) then
         local ipr_Int = p:IsTimingOut() and 3 or 2
         local ipr_Nick = p:Nick()
 
-        Ipr_MssgNet(ipr_Int, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1] and 3 or nil)
-
-        local ipr_JLSClear = "ipr_JLSClear" ..ipr_SteamID
-        if timer.Exists(ipr_JLSClear) then
-            return
-        end
-        timer.Create(ipr_JLSClear, Ipr_JoinLeave_Sys.Config.Server.AntiSpam, 1, function()
-            Ipr_ClearPlayer(ipr_SteamID)
-        end)
+        Ipr_MssgNet(ipr_Int, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1] and 3)
     end
+    Ipr_RemoveTimer(ipr_SteamID)
+
+    timer.Create("ipr_JLSClear" ..ipr_SteamID, Ipr_JoinLeave_Sys.Config.Server.AntiSpam, 1, function()
+        Ipr_ClearPlayer(ipr_SteamID)
+    end)
 end
 
 local function Ipr_GameConnect(data)

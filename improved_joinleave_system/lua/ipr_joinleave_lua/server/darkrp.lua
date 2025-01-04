@@ -87,7 +87,7 @@ local function Ipr_OverrideFunc()
         local ipr_Session = false
 
         DarkRP.log = function(t, c, n)
-            t = t or "[JLS]-[ERROR function DarkRP.log] You have not specified a valid argument (string message), fix the addon : " ..debug.getinfo(2, "S").short_src
+            t = t or "[ERROR function DarkRP.log] You have not specified a valid argument (string message), fix the addon : " ..debug.getinfo(2, "S").short_src
 
             if (c) then
                 c.a = nil

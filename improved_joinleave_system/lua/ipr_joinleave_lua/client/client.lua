@@ -1,20 +1,20 @@
---- Script By Inj3 
---- Script By Inj3 
---- Script By Inj3
-local function Ipr_Chat(i, n, s, t)
+-- // SCRIPT BY INJ3
+-- // https://steamcommunity.com/id/Inj3/
+
+local function ipr_Chat(i, n, s, t)
     return (t == "joinleave") and true
 end
 
 do
     if (Ipr_JoinLeave_Sys.Config.OptimizeDarkrp) and (string.lower(engine.ActiveGamemode()) == "darkrp") then
-        local function Ipr_JLS_Notif()
+        local function ipr_JLS_Notif()
             local ipr_l, ipr_t, ipr_s = net.ReadUInt(3), net.ReadUInt(16), net.ReadString()
 
             MsgC(Color(255, 20, 20, 255), "[JLS] ", Color(200, 200, 200, 255), ipr_s, "\n")
             notification.AddLegacy(ipr_s, ipr_t, ipr_l)
             surface.PlaySound(GAMEMODE.Config.notificationSound)
         end
-        local function Ipr_JLS_Console()
+        local function ipr_JLS_Console()
             local ipr_t =  {}
             for i = 1, 3 do
                 ipr_t[i] = net.ReadUInt(8)
@@ -26,8 +26,8 @@ do
         end
 
         local ipr_Receive = {
-            [0] = function() Ipr_JLS_Console() end,
-            [1] = function() Ipr_JLS_Notif() end,
+            [0] = function() ipr_JLS_Console() end,
+            [1] = function() ipr_JLS_Notif() end,
         }
         net.Receive("ipr_dkntf", function()
             local ipr_NetRead = net.ReadUInt(1)
@@ -36,7 +36,7 @@ do
     end
 end
 
-local function Ipr_Log()
+local function ipr_JLS()
     local ipr_u = net.ReadUInt(2)
     ipr_u = ipr_u + 1
     local ipr_n = net.ReadString()
@@ -44,5 +44,5 @@ local function Ipr_Log()
     chat.AddText(Ipr_JoinLeave_Sys.Config.Client.ColorNameServer, Ipr_JoinLeave_Sys.Config.Client.NameServer.. " : ", Ipr_JoinLeave_Sys.Config.Client.ColorPlayerJoin, ipr_n, Ipr_JoinLeave_Sys.Config.Client[ipr_u].c, ", " ..Ipr_JoinLeave_Sys.Config.Client[ipr_u].t)
 end
 
-net.Receive("ipr_jls", Ipr_Log)
-hook.Add("ChatText", "ipr_JoinLeaveSys_ChatText", Ipr_Chat)
+net.Receive("ipr_jls", ipr_JLS)
+hook.Add("ChatText", "ipr_JoinLeaveSys_ChatText", ipr_Chat)

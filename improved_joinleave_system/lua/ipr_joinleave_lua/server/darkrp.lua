@@ -1,6 +1,6 @@
---- Script By Inj3 
---- Script By Inj3 
---- Script By Inj3 
+-- // SCRIPT BY INJ3
+-- // https://steamcommunity.com/id/Inj3/
+
 if not Ipr_JoinLeave_Sys.Config.OptimizeDarkrp or (string.lower(engine.ActiveGamemode()) ~= "darkrp") then
     return 
 end
@@ -99,11 +99,11 @@ local function Ipr_OverrideFunc()
 
             local ipr_OsDate_ = os.date("%X")
             if not ipr_Session then
-                file.Write(ipr_Path, ipr_OsDate_ .."\t [JLS] "..t)
                 ipr_Session = true
+                
+                file.Write(ipr_Path, ipr_OsDate_ .."\t [JLS] "..t)
                 return
             end
-            
             file.Append(ipr_Path, "\n" ..ipr_OsDate_.. "\t [JLS] " ..t)
         end
     end 

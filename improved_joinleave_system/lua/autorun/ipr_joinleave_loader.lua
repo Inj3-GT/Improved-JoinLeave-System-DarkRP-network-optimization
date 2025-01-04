@@ -1,6 +1,6 @@
---- Script By Inj3 
---- Script By Inj3 
---- Script By Inj3 
+-- // SCRIPT BY INJ3
+-- // https://steamcommunity.com/id/Inj3/
+
 local Ipr_Cf = file.Find("ipr_joinleave_configuration/*", "LUA")
 local Ipr_Cl = file.Find("ipr_joinleave_lua/client/*", "LUA")
 

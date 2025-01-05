@@ -75,10 +75,10 @@ local function ipr_GameInit(s, n)
     if (ipr_JLSTable.Bool[s]) then
         return
     end
+    ipr_JLSTable.Bool[s] = true
+    
     ipr_RemoveTimer(s)
     ipr_SendMsg(0, n, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameInit[1] and 4)
-
-    ipr_JLSTable.Bool[s] = true
 end
 
 local function ipr_GameLeave(p)

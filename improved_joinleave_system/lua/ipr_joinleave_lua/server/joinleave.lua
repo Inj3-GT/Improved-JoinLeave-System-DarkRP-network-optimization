@@ -103,14 +103,14 @@ local function ipr_GameLeave(ply)
     end)
 end
 
-local ipr_Blacklist = ipr_JLS.Config.Server.BlockName.blacklist
-local ipr_BlockName = ipr_JLS.Config.Server.BlockName[1]
 local function ipr_GameConnect(data)
     local ipr_DataName = data.name
+    local ipr_BlockName = ipr_JLS.Config.Server.BlockName[1]
     
     if (ipr_BlockName) then
         ipr_DataName = ipr_DataName:lower()
         local ipr_DataUserId = data.userid
+        local ipr_Blacklist = ipr_JLS.Config.Server.BlockName.blacklist
 
         for i = 1, #ipr_Blacklist do
             if string.find(ipr_DataName, ipr_Blacklist[i])  then

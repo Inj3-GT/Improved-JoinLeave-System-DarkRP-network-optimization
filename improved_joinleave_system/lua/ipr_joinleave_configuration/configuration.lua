@@ -32,7 +32,7 @@ if (SERVER) then
             }
         },
 
-        AntiSpam = 5, --- Délai si le joueur tente de se connecter plusieurs fois dans les 5 secondes.
+        AntiSpam = 7, --- Délai si le joueur tente de se connecter plusieurs fois dans les 5 secondes.
     }
 else
     ipr_JLS.Config.Client = {
@@ -55,6 +55,9 @@ else
         {
             t = "quitte le serveur. (Timed out)",
             c = Color(231, 76, 60)
-        }
+        },
+        {
+            c = Color(255, 0, 0)
+        },
     }
 end

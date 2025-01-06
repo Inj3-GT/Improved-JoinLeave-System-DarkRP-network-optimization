@@ -89,10 +89,11 @@ end
 
 local function ipr_GameLeave(ply)
     local ipr_SteamID = ply:SteamID()
+    local ipr_TimeOut = ply:IsTimingOut()
 
-    if not ipr_JLSTable.Bool[ipr_SteamID] then
-        local ipr_TimeOut = ply:IsTimingOut() and 3 or 2
+    if (ipr_TimeOut) or not ipr_JLSTable.Bool[ipr_SteamID] then
         local ipr_Nick = ply:Nick()
+        ipr_TimeOut = ipr_TimeOut and 3 or 2
 
         ipr_SendMsg(ipr_TimeOut, ipr_Nick, ipr_JLS.Config.Server.HideNotification_GameLeave[1] and 3)
     end

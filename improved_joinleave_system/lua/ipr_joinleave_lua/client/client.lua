@@ -28,17 +28,12 @@ local function ipr_Notif()
     surface.PlaySound(GAMEMODE.Config.notificationSound)
 end
 
-local ipr_GameMode = (string.lower(engine.ActiveGamemode()) == "darkrp") 
 local ipr_Receive = {
     [0] = function() ipr_Console() end,
     [1] = function() ipr_Notif() end,
 }
 
 net.Receive("ipr_darkrp_notify", function()
-    if not ipr_JLS.Config.OptimizeDarkRP or not ipr_GameMode then
-        return
-    end
-
     local ipr_NetRead = net.ReadUInt(1)
     ipr_Receive[ipr_NetRead]()
 end)

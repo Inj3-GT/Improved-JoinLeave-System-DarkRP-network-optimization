@@ -29,7 +29,8 @@ do
             [0] = function() ipr_JLS_Console() end,
             [1] = function() ipr_JLS_Notif() end,
         }
-        net.Receive("ipr_dkntf", function()
+        
+        net.Receive("ipr_darkrp_notify", function()
             local ipr_NetRead = net.ReadUInt(1)
             ipr_Receive[ipr_NetRead]()
         end)

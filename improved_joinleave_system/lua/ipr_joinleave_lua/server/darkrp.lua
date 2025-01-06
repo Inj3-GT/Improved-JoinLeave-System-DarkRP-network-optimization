@@ -4,73 +4,59 @@
 if not Ipr_JoinLeave_Sys.Config.OptimizeDarkrp or (string.lower(engine.ActiveGamemode()) ~= "darkrp") then
     return 
 end
-util.AddNetworkString("ipr_dkntf")
 
-local function Ipr_LogNotif(p, t, l, m, b)
-    if (hook.Run("onNotify", (b) and player.GetAll() or p, t, l, m)) then
+local function Ipr_Notify(ply, msgtype, time, msg, broadcast)
+    local ipr_PTable = (broadcast) and player.GetHumans() or ply
+    ipr_PTable = (type(ipr_PTable) == "Player") and {ipr_PTable} or ipr_PTable
+    if not ipr_PTable then
         return
     end
+    if (hook.Run("onNotify", ipr_PTable, msgtype, time, msg)) then
+        return
+    end
+    net.Start("ipr_darkrp_notify")
 
-    net.Start("ipr_dkntf")
     net.WriteUInt(1, 1)
-    net.WriteUInt(l or 1, 3)
-    net.WriteUInt(t or 3, 16)
-    net.WriteString(m)
-
-    if (b) then
-        net.Broadcast()
-        return
-    end
+    net.WriteUInt(time or 1, 3)
+    net.WriteUInt(msgtype or 3, 16)
+    net.WriteString(msg)
 
     local ipr_RecipFilter = RecipientFilter()
-    for i = 1, #p do
-        local ipr_Player = p[i]
-        if not IsValid(ipr_Player) then
-            continue
-        end
-
-        ipr_RecipFilter:AddPlayer(ipr_Player)
-    end
+    ipr_RecipFilter:AddPlayers(ipr_PTable)
     net.Send(ipr_RecipFilter)
 end
 
-local function Ipr_LogConsole(m, c, p)
-    net.Start("ipr_dkntf")
+local function Ipr_LogConsole(msg, color, ptable)
+    net.Start("ipr_darkrp_notify")
     net.WriteUInt(0, 1)
-
-    for _, n in pairs(c) do
-        net.WriteUInt(n, 8)
+    for _, c in pairs(color) do
+        net.WriteUInt(c, 8)
     end
-
-    net.WriteString(m)
+    net.WriteString(msg)
 
     local ipr_RecipFilter = RecipientFilter()
-    for i = 1, #p do
-        local ipr_Player = p[i]
+    for i = 1, #ptable do
+        local ipr_Player = ptable[i]
         if not IsValid(ipr_Player) then
             continue
         end
-        if not hook.Call("canSeeLogMessage", GAMEMODE, ipr_Player, m, c) then
+        if not hook.Call("canSeeLogMessage", GAMEMODE, ipr_Player, msg, color) then
            continue
         end
 
         ipr_RecipFilter:AddPlayer(ipr_Player)
     end
+
     net.Send(ipr_RecipFilter)
 end
 
 local function Ipr_OverrideFunc()
     if (DarkRP) then
-        DarkRP.notify = function(p, t, l, m)
-            p = (type(p) ~= "table") and {p} or IsValid(p) and p
-            if not p then
-                return
-            end
-
-            Ipr_LogNotif(p, t, l, m)
+        DarkRP.notify = function(ply, msgtype, time, msg)
+            Ipr_Notify(ply, msgtype, time, msg)
         end
-        DarkRP.notifyAll = function(t, l, m)
-            Ipr_LogNotif(nil, t, l, m, true)
+        DarkRP.notifyAll = function(msgtype, time, msg)
+            Ipr_Notify(nil, msgtype, time, msg, true)
         end
 
         local ipr_OsDateYear = os.date("%Y")
@@ -86,31 +72,30 @@ local function Ipr_OverrideFunc()
         local ipr_Path = ipr_LogsPath.. "/" ..ipr_OsDate.. ".json"
         local ipr_Session = false
 
-        DarkRP.log = function(t, c, n)
-            t = t or "[ERROR function DarkRP.log] You have not specified a valid argument (string message), fix the addon : " ..debug.getinfo(2, "S").short_src
+        DarkRP.log = function(msg, color, log)
+            msg = msg or "[ERROR function DarkRP.log] You have not specified a valid argument (string message), fix the addon : " ..debug.getinfo(2, "S").short_src
 
-            if (c) then
-                c.a = nil
-                CAMI.GetPlayersWithAccess("DarkRP_SeeEvents", fp{Ipr_LogConsole, t, c})
+            if (color) then
+                color.a = nil
+                CAMI.GetPlayersWithAccess("DarkRP_SeeEvents", fp{Ipr_LogConsole, msg, color})
             end
-            if not GAMEMODE.Config.logging or (n) then
+            if not GAMEMODE.Config.logging or (log) then
                 return
             end
 
             local ipr_OsDate_ = os.date("%X")
             if not ipr_Session then
-                ipr_Session = true
-                
-                file.Write(ipr_Path, ipr_OsDate_ .."\t [JLS] "..t)
+                ipr_Session = true               
+                file.Write(ipr_Path, ipr_OsDate_ .."\t [JLS] "..msg)
                 return
             end
-            file.Append(ipr_Path, "\n" ..ipr_OsDate_.. "\t [JLS] " ..t)
+
+            file.Append(ipr_Path, "\n" ..ipr_OsDate_.. "\t [JLS] " ..msg)
         end
     end 
 end
 
 hook.Add("PostGamemodeLoaded", "Ipr_JLS_DarkRPOver", Ipr_OverrideFunc)
-
 -- // Debug - DarkRP.notify(player.GetAll()[1], 1, 1, "test") 
--- // Debug - DarkRP.notifyAll(1, 1, "test") 
+-- // Debug - DarkRP.notifyAll(1, 1, "test")  
 -- // Debug - DarkRP.log("test", color_white, false) 

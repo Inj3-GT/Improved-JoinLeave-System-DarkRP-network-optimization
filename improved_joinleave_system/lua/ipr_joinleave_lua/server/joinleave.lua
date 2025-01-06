@@ -22,7 +22,6 @@ do
         end
     end
 
-    ipr_SortValue(ipr_JLS.Config.Server.BlockName.blacklist, 1)
     ipr_SortValue(ipr_JLS.Config.Server.HideNotification_GameLoaded.group, 2)
     ipr_SortValue(ipr_JLS.Config.Server.HideNotification_GameLeave.group, 3)
     ipr_SortValue(ipr_JLS.Config.Server.HideNotification_GameInit.group, 4)
@@ -104,16 +103,17 @@ local function ipr_GameLeave(ply)
     end)
 end
 
+local ipr_Blacklist = ipr_JLS.Config.Server.BlockName.blacklist
+local ipr_BlockName = ipr_JLS.Config.Server.BlockName[1]
 local function ipr_GameConnect(data)
-    local ipr_BlockName = ipr_JLS.Config.Server.BlockName[1]
     local ipr_DataName = data.name
     
     if (ipr_BlockName) then
         ipr_DataName = ipr_DataName:lower()
         local ipr_DataUserId = data.userid
 
-        for d in pairs(ipr_JLSTable.Grp[1]) do
-            if string.find(ipr_DataName, d)  then
+        for i = 1, #ipr_Blacklist do
+            if string.find(ipr_DataName, ipr_Blacklist[i])  then
                 
                 timer.Simple(1, function()
                     if not player.GetByID(ipr_DataUserId) then

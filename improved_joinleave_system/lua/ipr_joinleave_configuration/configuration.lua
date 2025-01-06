@@ -1,8 +1,5 @@
 -- // SCRIPT BY INJ3
 -- // https://steamcommunity.com/id/Inj3/
--- // https://github.com/Inj3-GT
--- // Activer = true / Désactiver = false
--- // Improved Join/Leave System (JLS)
 
 ipr_JLS.Config.OptimizeDarkRP = true --- Optimisation de certaines fonctions du gamemode DarkRP (notification, log console, système de log journalier)
 

@@ -1,11 +1,11 @@
 -- // SCRIPT BY INJ3
 -- // https://steamcommunity.com/id/Inj3/
 
-if not Ipr_JoinLeave_Sys.Config.OptimizeDarkrp or (string.lower(engine.ActiveGamemode()) ~= "darkrp") then
+if not ipr_JLS.Config.OptimizeDarkRP or (string.lower(engine.ActiveGamemode()) ~= "darkrp") then
     return 
 end
 
-local function Ipr_Notify(ply, msgtype, time, msg, broadcast)
+local function ipr_Notify(ply, msgtype, time, msg, broadcast)
     local ipr_PTable = (broadcast) and player.GetHumans() or ply
     ipr_PTable = (type(ipr_PTable) == "Player") and {ipr_PTable} or ipr_PTable
     if not ipr_PTable then
@@ -26,7 +26,7 @@ local function Ipr_Notify(ply, msgtype, time, msg, broadcast)
     net.Send(ipr_RecipFilter)
 end
 
-local function Ipr_LogConsole(msg, color, ptable)
+local function ipr_Console(msg, color, ptable)
     net.Start("ipr_darkrp_notify")
     net.WriteUInt(0, 1)
     for _, c in pairs(color) do
@@ -50,13 +50,13 @@ local function Ipr_LogConsole(msg, color, ptable)
     net.Send(ipr_RecipFilter)
 end
 
-local function Ipr_OverrideFunc()
+local function ipr_OverrideFunc()
     if (DarkRP) then
         DarkRP.notify = function(ply, msgtype, time, msg)
-            Ipr_Notify(ply, msgtype, time, msg)
+            ipr_Notify(ply, msgtype, time, msg)
         end
         DarkRP.notifyAll = function(msgtype, time, msg)
-            Ipr_Notify(nil, msgtype, time, msg, true)
+            ipr_Notify(nil, msgtype, time, msg, true)
         end
 
         local ipr_OsDateYear = os.date("%Y")
@@ -77,7 +77,7 @@ local function Ipr_OverrideFunc()
 
             if (color) then
                 color.a = nil
-                CAMI.GetPlayersWithAccess("DarkRP_SeeEvents", fp{Ipr_LogConsole, msg, color})
+                CAMI.GetPlayersWithAccess("DarkRP_SeeEvents", fp{ipr_Console, msg, color})
             end
             if not GAMEMODE.Config.logging or (log) then
                 return
@@ -95,7 +95,7 @@ local function Ipr_OverrideFunc()
     end 
 end
 
-hook.Add("PostGamemodeLoaded", "Ipr_JLS_DarkRPOver", Ipr_OverrideFunc)
+hook.Add("PostGamemodeLoaded", "Ipr_JLS_DarkRPOver", ipr_OverrideFunc)
 -- // Debug - DarkRP.notify(player.GetAll()[1], 1, 1, "test") 
 -- // Debug - DarkRP.notifyAll(1, 1, "test")  
 -- // Debug - DarkRP.log("test", color_white, false) 

@@ -5,7 +5,7 @@ local ipr_JLSTable = {}
 ipr_JLSTable.Grp, ipr_JLSTable.Bool = {}, {}
 ipr_JLSTable.Bits = 2
 do
-    local function Ipr_SortValue(ptable, name)
+    local function ipr_SortValue(ptable, name)
         if not ipr_JLSTable.Grp[name] then
             ipr_JLSTable.Grp[name] = {}
         end
@@ -21,10 +21,10 @@ do
         end
     end
 
-    Ipr_SortValue(Ipr_JoinLeave_Sys.Config.Server.BlockName.blacklist, 1)
-    Ipr_SortValue(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded.group, 2)
-    Ipr_SortValue(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave.group, 3)
-    Ipr_SortValue(Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameInit.group, 4)
+    ipr_SortValue(ipr_JLS.Config.Server.BlockName.blacklist, 1)
+    ipr_SortValue(ipr_JLS.Config.Server.HideNotification_GameLoaded.group, 2)
+    ipr_SortValue(ipr_JLS.Config.Server.HideNotification_GameLeave.group, 3)
+    ipr_SortValue(ipr_JLS.Config.Server.HideNotification_GameInit.group, 4)
 end
 
 local function ipr_SendMsg(msgtype, msg, hide)
@@ -41,7 +41,7 @@ local function ipr_SendMsg(msgtype, msg, hide)
            continue
         end
         local ipr_UserGrp = ipr_Player:GetUserGroup()
-        if (hide) and not ipr_JLSTable.Grp[g][ipr_UserGrp] then
+        if (hide) and not ipr_JLSTable.Grp[hide][ipr_UserGrp] then
            continue
         end
 
@@ -72,7 +72,7 @@ local function ipr_GameLoaded(ply)
         local ipr_SteamID = ply:SteamID()
 
         ipr_ClearPlayer(ipr_SteamID)
-        ipr_SendMsg(1, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLoaded[1] and 2)
+        ipr_SendMsg(1, ipr_Nick, ipr_JLS.Config.Server.HideNotification_GameLoaded[1] and 2)
     end)
 end
 
@@ -83,7 +83,7 @@ local function ipr_GameInit(steamid, name)
     ipr_JLSTable.Bool[steamid] = true
     
     ipr_RemoveTimer(steamid)
-    ipr_SendMsg(0, name, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameInit[1] and 4)
+    ipr_SendMsg(0, name, ipr_JLS.Config.Server.HideNotification_GameInit[1] and 4)
 end
 
 local function ipr_GameLeave(ply)
@@ -93,17 +93,17 @@ local function ipr_GameLeave(ply)
         local ipr_TimeOut = ply:IsTimingOut() and 3 or 2
         local ipr_Nick = ply:Nick()
 
-        ipr_SendMsg(ipr_TimeOut, ipr_Nick, Ipr_JoinLeave_Sys.Config.Server.HideNotification_GameLeave[1] and 3)
+        ipr_SendMsg(ipr_TimeOut, ipr_Nick, ipr_JLS.Config.Server.HideNotification_GameLeave[1] and 3)
     end
 
     ipr_RemoveTimer(ipr_SteamID)
-    timer.Create("ipr_JLSClear" ..ipr_SteamID, Ipr_JoinLeave_Sys.Config.Server.AntiSpam, 1, function()
+    timer.Create("ipr_JLSClear" ..ipr_SteamID, ipr_JLS.Config.Server.AntiSpam, 1, function()
         ipr_ClearPlayer(ipr_SteamID)
     end)
 end
 
 local function ipr_GameConnect(data)
-    local ipr_BlockName = Ipr_JoinLeave_Sys.Config.Server.BlockName[1]
+    local ipr_BlockName = ipr_JLS.Config.Server.BlockName[1]
     local ipr_DataName = data.name
     
     if (ipr_BlockName) then

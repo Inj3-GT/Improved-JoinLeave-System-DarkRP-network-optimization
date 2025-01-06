@@ -4,10 +4,10 @@
 -- // Activer = true / Désactiver = false
 -- // Improved Join/Leave System (JLS)
 
-Ipr_JoinLeave_Sys.Config.OptimizeDarkrp = true --- Optimisation de certaines fonctions du gamemode DarkRP (notification, log console, système de log journalier)
+ipr_JLS.Config.OptimizeDarkRP = true --- Optimisation de certaines fonctions du gamemode DarkRP (notification, log console, système de log journalier)
 
 if (SERVER) then
-    Ipr_JoinLeave_Sys.Config.Server = {
+    ipr_JLS.Config.Server = {
         HideNotification_GameInit = {
             false, --- Masquer la notification lorsque le joueur n'est pas encore complètement initialisé dans le serveur, seuls les groupes ci-dessous peuvent voir la notification.
             group = {
@@ -38,7 +38,7 @@ if (SERVER) then
         AntiSpam = 5, --- Délai si le joueur tente de se connecter plusieurs fois dans les 5 secondes.
     }
 else
-    Ipr_JoinLeave_Sys.Config.Client = {
+    ipr_JLS.Config.Client = {
         NameServer = "VotreNomDeServeur", --- Nom de votre Serveur.
         ColorNameServer = Color(231, 76, 60), --- Couleur du texte (Nom serveur).
         ColorPlayerJoin = Color(236, 240, 241), --- Couleur Nom du joueur.

@@ -6,15 +6,15 @@ local function ipr_Chat(i, n, s, t)
 end
 
 do
-    if (Ipr_JoinLeave_Sys.Config.OptimizeDarkrp) and (string.lower(engine.ActiveGamemode()) == "darkrp") then
-        local function ipr_JLS_Notif()
+    if (ipr_JLS.Config.OptimizeDarkRP) and (string.lower(engine.ActiveGamemode()) == "darkrp") then
+        local function ipr_Notif()
             local ipr_l, ipr_t, ipr_s = net.ReadUInt(3), net.ReadUInt(16), net.ReadString()
 
             MsgC(Color(255, 20, 20, 255), "[JLS] ", Color(200, 200, 200, 255), ipr_s, "\n")
             notification.AddLegacy(ipr_s, ipr_t, ipr_l)
             surface.PlaySound(GAMEMODE.Config.notificationSound)
         end
-        local function ipr_JLS_Console()
+        local function ipr_Console()
             local ipr_t =  {}
             for i = 1, 3 do
                 ipr_t[i] = net.ReadUInt(8)
@@ -26,8 +26,8 @@ do
         end
 
         local ipr_Receive = {
-            [0] = function() ipr_JLS_Console() end,
-            [1] = function() ipr_JLS_Notif() end,
+            [0] = function() ipr_Console() end,
+            [1] = function() ipr_Notif() end,
         }
         
         net.Receive("ipr_darkrp_notify", function()
@@ -37,13 +37,13 @@ do
     end
 end
 
-local function ipr_JLS()
-    local ipr_u = net.ReadUInt(2)
-    ipr_u = ipr_u + 1
+local function ipr_JoinLeave()
+    local ipr_u = net.ReadUInt(2) + 1
+    print(ipr_u)
     local ipr_n = net.ReadString()
 
-    chat.AddText(Ipr_JoinLeave_Sys.Config.Client.ColorNameServer, Ipr_JoinLeave_Sys.Config.Client.NameServer.. " : ", Ipr_JoinLeave_Sys.Config.Client.ColorPlayerJoin, ipr_n, Ipr_JoinLeave_Sys.Config.Client[ipr_u].c, ", " ..Ipr_JoinLeave_Sys.Config.Client[ipr_u].t)
+    chat.AddText(ipr_JLS.Config.Client.ColorNameServer, ipr_JLS.Config.Client.NameServer.. " : ", ipr_JLS.Config.Client.ColorPlayerJoin, ipr_n, ipr_JLS.Config.Client[ipr_u].c, ", " ..ipr_JLS.Config.Client[ipr_u].t)
 end
 
-net.Receive("ipr_jls", ipr_JLS)
+net.Receive("ipr_jls", ipr_JoinLeave)
 hook.Add("ChatText", "ipr_JoinLeaveSys_ChatText", ipr_Chat)

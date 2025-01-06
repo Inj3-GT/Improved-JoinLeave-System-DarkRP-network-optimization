@@ -4,8 +4,8 @@
 local ipr_Cf = file.Find("ipr_joinleave_configuration/*", "LUA")
 local ipr_Cl = file.Find("ipr_joinleave_lua/client/*", "LUA")
 
-Ipr_JoinLeave_Sys = Ipr_JoinLeave_Sys or {}
-Ipr_JoinLeave_Sys.Config = Ipr_JoinLeave_Sys.Config or {}
+ipr_JLS = ipr_JLS or {}
+ipr_JLS.Config = ipr_JLS.Config or {}
 
 if (SERVER) then
     for i = 1, #ipr_Cf do

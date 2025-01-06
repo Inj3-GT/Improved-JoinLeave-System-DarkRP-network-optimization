@@ -39,7 +39,6 @@ end
 
 local function ipr_JoinLeave()
     local ipr_u = net.ReadUInt(2) + 1
-    print(ipr_u)
     local ipr_n = net.ReadString()
 
     chat.AddText(ipr_JLS.Config.Client.ColorNameServer, ipr_JLS.Config.Client.NameServer.. " : ", ipr_JLS.Config.Client.ColorPlayerJoin, ipr_n, ipr_JLS.Config.Client[ipr_u].c, ", " ..ipr_JLS.Config.Client[ipr_u].t)

@@ -4,6 +4,7 @@
 local ipr_JLSTable = {}
 ipr_JLSTable.Grp, ipr_JLSTable.Bool = {}, {}
 ipr_JLSTable.Bits = 2
+
 do
     local function ipr_SortValue(ptable, name)
         if not ipr_JLSTable.Grp[name] then

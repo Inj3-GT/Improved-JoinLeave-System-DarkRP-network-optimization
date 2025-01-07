@@ -32,7 +32,7 @@ if (SERVER) then
             }
         },
 
-        AntiSpam = 7, --- Délai si le joueur tente de se connecter plusieurs fois dans les 5 secondes.
+        AntiSpam = 7, --- Délai si le joueur tente de se connecter plusieurs fois dans les 7 secondes.
     }
 else
     ipr_JLS.Config.Client = {

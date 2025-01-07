@@ -14,8 +14,8 @@ local function ipr_Notify(ply, msgtype, time, msg, broadcast)
     net.Start("ipr_darkrp_notify")
     net.WriteUInt(1, 1)
     
-    net.WriteUInt(time, 10)
-    net.WriteUInt(msgtype, 3)
+    net.WriteUInt(time or 1, 10)
+    net.WriteUInt(msgtype or 0, 3)
     net.WriteString(msg)
 
     local ipr_RecipFilter = RecipientFilter()

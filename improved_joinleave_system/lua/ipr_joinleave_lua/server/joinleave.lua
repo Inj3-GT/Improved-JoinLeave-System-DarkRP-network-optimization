@@ -5,18 +5,18 @@ local ipr_Filter = {}
 ipr_Filter.Group = {}
 
 do
-    local function ipr_SortValue(ctable, cname)
-        if not ipr_Filter.Group[cname] then
-            ipr_Filter.Group[cname] = {}
+    local function ipr_SortValue(tbl, tname)
+        if not ipr_Filter.Group[tname] then
+            ipr_Filter.Group[tname] = {}
         end
 
-        for i = 1, #ctable do
-            local ipr_CTable = ctable[i]
-            if not ipr_Filter.Group[cname][ipr_CTable] then
-                ipr_Filter.Group[cname][ipr_CTable] = {}
+        for i = 1, #tbl do
+            local ipr_Var = tbl[i]
+            if not ipr_Filter.Group[tname][ipr_Var] then
+                ipr_Filter.Group[tname][ipr_Var] = {}
             end
 
-            ipr_Filter.Group[cname][ipr_CTable] = true
+            ipr_Filter.Group[tname][ipr_Var] = true
         end
     end
 

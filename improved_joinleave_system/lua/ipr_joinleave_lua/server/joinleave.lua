@@ -90,6 +90,7 @@ end
 local function ipr_GameLeave(ply)
     local ipr_SteamID = ply:SteamID()
     local ipr_TimeOut = ply:IsTimingOut()
+    local ipr_AntiSpam = ipr_JLS.Config.Server.AntiSpam
 
     if (ipr_TimeOut) or not ipr_Filter.Spam[ipr_SteamID] then
         local ipr_PGameLeave = ipr_JLS.Config.Server.HideNotification_GameLeave[1] and 2
@@ -98,7 +99,6 @@ local function ipr_GameLeave(ply)
 
         ipr_SendMsg(ipr_TimeOut, ipr_Nick, ipr_PGameLeave)
     end
-    local ipr_AntiSpam = ipr_JLS.Config.Server.AntiSpam
     
     timer.Create("ipr_JLSClear" ..ipr_SteamID, ipr_AntiSpam, 1, function()
         ipr_ClearPlayer(ipr_SteamID)

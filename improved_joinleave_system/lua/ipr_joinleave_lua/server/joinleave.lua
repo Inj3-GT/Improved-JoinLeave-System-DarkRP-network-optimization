@@ -81,7 +81,6 @@ local function ipr_GameInit(steamid, name)
     if (ipr_Filter.Spam[steamid]) then
         return
     end
-    
     local ipr_PGameInit = ipr_JLS.Config.Server.HideNotification_GameInit[1] and 3
     ipr_Filter.Spam[steamid] = true
 

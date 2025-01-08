@@ -63,7 +63,7 @@ local function ipr_RemoveTimer(steamid)
 end
 
 local function ipr_GameLoaded(ply)
-    timer.Simple(7, function()
+    timer.Simple(5, function()
         if not IsValid(ply) then
             return
         end

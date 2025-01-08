@@ -77,13 +77,14 @@ local function ipr_GameLoaded(ply)
 end
 
 local function ipr_GameInit(steamid, name)
+    ipr_RemoveTimer(steamid)
     if (ipr_Filter.Spam[steamid]) then
         return
     end
+    
     local ipr_PGameInit = ipr_JLS.Config.Server.HideNotification_GameInit[1] and 3
     ipr_Filter.Spam[steamid] = true
 
-    ipr_RemoveTimer(steamid)
     ipr_SendMsg(0, name, ipr_PGameInit)
 end
 

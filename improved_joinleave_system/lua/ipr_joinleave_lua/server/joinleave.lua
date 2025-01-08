@@ -57,8 +57,9 @@ local function ipr_ClearPlayer(steamid)
 end
 
 local function ipr_RemoveTimer(steamid)
-    if (timer.Exists("ipr_JLSClear" ..steamid)) then
-        timer.Remove("ipr_JLSClear" ..steamid)
+    steamid = "ipr_JLSClear" ..steamid
+    if (timer.Exists(steamid)) then
+        timer.Remove(steamid)
     end
 end
 

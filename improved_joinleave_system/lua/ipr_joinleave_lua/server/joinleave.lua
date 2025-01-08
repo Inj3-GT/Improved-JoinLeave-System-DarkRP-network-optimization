@@ -100,8 +100,7 @@ local function ipr_GameLeave(ply)
         ipr_SendMsg(ipr_TimeOut, ipr_Nick, ipr_PGameLeave)
     end
     local ipr_AntiSpam = ipr_JLS.Config.Server.AntiSpam
-    ipr_RemoveTimer(ipr_SteamID)
-
+    
     timer.Create("ipr_JLSClear" ..ipr_SteamID, ipr_AntiSpam, 1, function()
         ipr_ClearPlayer(ipr_SteamID)
     end)
